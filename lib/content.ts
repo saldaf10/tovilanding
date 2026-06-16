@@ -82,6 +82,18 @@ export const PORTFOLIO: PortfolioItem[] = [
     video: "https://vz-938afc4c-68d.b-cdn.net/dd89d36c-c7fb-4867-8554-6eaa295e9905/play_1080p.mp4",
   },
   {
+    title: "Vlog",
+    category: "Vlogs",
+    poster: "https://vz-938afc4c-68d.b-cdn.net/25c74b69-8640-4c9f-91ff-f8940d820cf8/thumbnail.jpg",
+    video: "https://vz-938afc4c-68d.b-cdn.net/25c74b69-8640-4c9f-91ff-f8940d820cf8/play_1080p.mp4",
+  },
+  {
+    title: "Vlog",
+    category: "Vlogs",
+    poster: "https://vz-938afc4c-68d.b-cdn.net/f45c1817-d9d4-4123-9629-2ec2d5672c61/thumbnail.jpg",
+    video: "https://vz-938afc4c-68d.b-cdn.net/f45c1817-d9d4-4123-9629-2ec2d5672c61/play_1080p.mp4",
+  },
+  {
     title: "Videoclip",
     category: "Videoclips",
     poster: "https://vz-938afc4c-68d.b-cdn.net/46fb4f15-5d97-4fb4-8492-59e57e6c0cce/thumbnail.jpg",

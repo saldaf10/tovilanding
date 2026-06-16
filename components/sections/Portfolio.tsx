@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import SplitText from "@/components/SplitText";
@@ -128,14 +127,13 @@ function VideoCard({ item, index }: { item: PortfolioItem; index: number }) {
       data-cursor="hover"
       className="group relative aspect-[9/16] w-36 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-ink-warm sm:w-44"
     >
-      {/* Thumbnail siempre visible */}
-      <Image
+      {/* Thumbnail — img directo para que el browser envíe Referer al CDN */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src={item.poster}
         alt={item.title}
-        fill
-        sizes="176px"
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
 
       {/* Video al hacer hover */}
