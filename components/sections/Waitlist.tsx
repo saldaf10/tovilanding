@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import SplitText from "@/components/SplitText";
 import MagneticButton from "@/components/MagneticButton";
+import CountdownTimer from "@/components/CountdownTimer";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -56,15 +57,15 @@ export default function Waitlist() {
 
   return (
     <section id="curso" className="grain relative overflow-hidden bg-gold py-24 text-ink sm:py-32">
-      {/* Sticker "próximamente" */}
+      {/* Timer en la izquierda */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8, rotate: 6 }}
-        whileInView={{ opacity: 1, scale: 1, rotate: 6 }}
+        initial={{ opacity: 0, scale: 0.8, rotate: -6 }}
+        whileInView={{ opacity: 1, scale: 1, rotate: -6 }}
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 200, damping: 12 }}
-        className="absolute right-6 top-10 z-10 rotate-6 bg-magenta px-4 py-2 font-display text-sm uppercase text-white sm:text-base"
+        className="absolute left-4 top-1/2 z-10 hidden -translate-y-1/2 lg:block"
       >
-        Próximamente
+        <CountdownTimer />
       </motion.div>
 
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-10">

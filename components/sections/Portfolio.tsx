@@ -7,57 +7,50 @@ import Reveal from "@/components/Reveal";
 import SplitText from "@/components/SplitText";
 import { PORTFOLIO, type PortfolioItem } from "@/lib/content";
 
-const CATEGORIES = ["Todos", "Vlogs", "Reels para marcas", "Videoclips"] as const;
-type Category = (typeof CATEGORIES)[number];
+const SECTIONS = [
+  { category: "Vlogs",             textSide: "left"  },
+  { category: "Reels para marcas", textSide: "right" },
+  { category: "Videoclips",        textSide: "left"  },
+] as const;
 
 export default function Portfolio() {
-  const [active, setActive] = useState<Category>("Todos");
-
-  const items =
-    active === "Todos"
-      ? PORTFOLIO
-      : PORTFOLIO.filter((p) => p.category === active);
-
   return (
     <section id="trabajo" className="relative bg-ink-soft py-24 sm:py-32">
+      {/* Encabezado */}
       <div className="mx-auto max-w-6xl px-5 sm:px-10">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <Reveal>
-              <span className="kicker text-magenta">Showreel</span>
-            </Reveal>
-            <h2 className="mt-3 font-display text-giant uppercase leading-[0.9]">
-              <SplitText text="El trabajo" />
-            </h2>
-          </div>
-
-          {/* Filtros */}
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActive(cat)}
-                data-cursor="hover"
-                className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-                  active === cat
-                    ? "border-magenta bg-magenta text-white"
-                    : "border-white/20 text-white/70 hover:border-cream hover:text-cream"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Reveal>
+          <span className="kicker text-magenta">Showreel</span>
+        </Reveal>
+        <h2 className="mt-3 font-display text-giant uppercase leading-[0.9]">
+          <SplitText text="Mi trabajo" />
+        </h2>
       </div>
 
-      {/* Carrusel */}
-      <Carousel items={items} />
+      {/* 3 carruseles */}
+      <div className="mt-16 flex flex-col gap-14">
+        {SECTIONS.map((s, i) => (
+          <CategoryCarousel
+            key={s.category}
+            category={s.category}
+            textSide={s.textSide}
+            index={i}
+          />
+        ))}
+      </div>
     </section>
   );
 }
 
-function Carousel({ items }: { items: PortfolioItem[] }) {
+function CategoryCarousel({
+  category,
+  textSide,
+  index,
+}: {
+  category: string;
+  textSide: "left" | "right";
+  index: number;
+}) {
+  const items = PORTFOLIO.filter((p) => p.category === category);
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [dragWidth, setDragWidth] = useState(0);
@@ -65,102 +58,87 @@ function Carousel({ items }: { items: PortfolioItem[] }) {
   useEffect(() => {
     const calc = () => {
       if (outerRef.current && innerRef.current) {
-        setDragWidth(innerRef.current.scrollWidth - outerRef.current.offsetWidth);
+        setDragWidth(
+          Math.max(0, innerRef.current.scrollWidth - outerRef.current.offsetWidth)
+        );
       }
     };
     calc();
     window.addEventListener("resize", calc);
     return () => window.removeEventListener("resize", calc);
-  }, [items]);
+  }, [items.length]);
 
-  const scroll = (dir: "left" | "right") => {
-    if (!outerRef.current) return;
-    const card = outerRef.current.querySelector("article");
-    const step = card ? card.offsetWidth + 20 : 340;
-    outerRef.current.scrollBy({ left: dir === "right" ? step : -step, behavior: "smooth" });
-  };
+  const textBlock = (
+    <Reveal delay={0.05 * index}>
+      <div className="w-28 shrink-0 sm:w-36">
+        <p className="font-display text-xl uppercase leading-tight text-white sm:text-2xl">
+          {category}
+        </p>
+        <p className="kicker mt-1 text-white/40">{items.length} videos</p>
+      </div>
+    </Reveal>
+  );
+
+  const track = (
+    <div ref={outerRef} className="min-w-0 flex-1 overflow-hidden">
+      <motion.div
+        ref={innerRef}
+        drag="x"
+        dragConstraints={{ right: 0, left: -dragWidth }}
+        dragElastic={0.04}
+        dragTransition={{ bounceDamping: 30, bounceStiffness: 300 }}
+        className="flex cursor-grab gap-3 active:cursor-grabbing"
+        style={{ width: "max-content" }}
+      >
+        {items.map((item, i) => (
+          <VideoCard key={item.poster} item={item} index={i} />
+        ))}
+        <div className="w-5 shrink-0" />
+      </motion.div>
+    </div>
+  );
 
   return (
-    <div className="relative mt-12">
-      {/* Navegación */}
-      <div className="absolute -top-14 right-5 z-10 flex gap-2 sm:right-10">
-        <button
-          onClick={() => scroll("left")}
-          data-cursor="hover"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta"
-          aria-label="Anterior"
-        >
-          ←
-        </button>
-        <button
-          onClick={() => scroll("right")}
-          data-cursor="hover"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta"
-          aria-label="Siguiente"
-        >
-          →
-        </button>
-      </div>
-
-      {/* Track con scroll nativo + drag Framer Motion */}
-      <div
-        ref={outerRef}
-        className="overflow-x-auto scroll-smooth scrollbar-hide pl-5 sm:pl-10"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        <motion.div
-          ref={innerRef}
-          drag="x"
-          dragConstraints={{ right: 0, left: -Math.max(dragWidth, 0) }}
-          dragElastic={0.05}
-          dragTransition={{ bounceDamping: 30, bounceStiffness: 300 }}
-          className="flex gap-5 cursor-grab active:cursor-grabbing"
-          style={{ width: "max-content" }}
-        >
-          {items.map((item, i) => (
-            <PortfolioCard key={item.poster} item={item} index={i} />
-          ))}
-          {/* Spacer final para que el último card no quede pegado al borde */}
-          <div className="w-5 shrink-0 sm:w-10" />
-        </motion.div>
-      </div>
+    <div className="flex items-center gap-5 px-5 sm:px-10">
+      {textSide === "left" ? (
+        <>{textBlock}{track}</>
+      ) : (
+        <>{track}{textBlock}</>
+      )}
     </div>
   );
 }
 
-function PortfolioCard({ item, index }: { item: PortfolioItem; index: number }) {
+function VideoCard({ item, index }: { item: PortfolioItem; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleEnter = () => videoRef.current?.play().catch(() => {});
-  const handleLeave = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8%" }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (index % 4) * 0.06 }}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
+      viewport={{ once: true, margin: "-5%" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: (index % 5) * 0.05 }}
+      onMouseEnter={() => videoRef.current?.play().catch(() => {})}
+      onMouseLeave={() => {
+        if (videoRef.current) {
+          videoRef.current.pause();
+          videoRef.current.currentTime = 0;
+        }
+      }}
       data-cursor="hover"
-      className="group relative aspect-[9/16] w-[72vw] shrink-0 cursor-pointer overflow-hidden rounded-xl bg-ink sm:w-[38vw] lg:w-[26vw]"
+      className="group relative aspect-[9/16] w-36 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-ink-warm sm:w-44"
     >
-      {/* Thumbnail */}
+      {/* Thumbnail siempre visible */}
       <Image
         src={item.poster}
         alt={item.title}
         fill
-        sizes="(max-width: 640px) 72vw, (max-width: 1024px) 38vw, 26vw"
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        sizes="176px"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
       />
 
-      {/* Preview de video al hover */}
+      {/* Video al hacer hover */}
       {item.video && (
         <video
           ref={videoRef}
@@ -168,33 +146,22 @@ function PortfolioCard({ item, index }: { item: PortfolioItem; index: number }) 
           loop
           playsInline
           preload="none"
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-400 group-hover:opacity-100"
         >
           <source src={item.video} type="video/mp4" />
         </video>
       )}
 
-      <div className="absolute inset-0 bg-ink/0 transition-colors duration-500 group-hover:bg-ink/20" />
+      {/* Overlay sutil */}
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent" />
 
-      {/* Categoría */}
-      <span className="absolute left-3 top-3 z-10 bg-ink/80 px-2 py-1 text-xs font-semibold uppercase tracking-wide text-cream backdrop-blur-sm">
-        {item.category}
-      </span>
-
-      {/* Botón play */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center">
-        <div className="flex h-14 w-14 translate-y-3 items-center justify-center rounded-full bg-magenta opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-          <svg width="18" height="20" viewBox="0 0 20 22" fill="none" aria-hidden>
+      {/* Play icon */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-magenta shadow-lg">
+          <svg width="12" height="14" viewBox="0 0 20 22" fill="none" aria-hidden>
             <path d="M19 11L0.25 21.825V0.175L19 11Z" fill="white" />
           </svg>
         </div>
-      </div>
-
-      {/* Título */}
-      <div className="absolute inset-x-0 bottom-0 z-10 p-4">
-        <h3 className="translate-y-1 font-display text-2xl uppercase leading-none transition-transform duration-500 group-hover:translate-y-0">
-          {item.title}
-        </h3>
       </div>
     </motion.article>
   );

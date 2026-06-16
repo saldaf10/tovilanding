@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import SplitText from "@/components/SplitText";
-import CountdownTimer from "@/components/CountdownTimer";
 import { SERVICES } from "@/lib/content";
 
 /**
@@ -70,22 +69,20 @@ export default function Services() {
                   {s.desc}
                 </p>
 
-                {/* Timer exclusivo para el Curso de edición */}
-                {s.title === "Curso de edición" && (
-                  <div className="relative z-10 mt-6">
-                    <CountdownTimer />
-                  </div>
-                )}
-
-                {/* Flecha que se desliza al hover */}
-                {s.title !== "Curso de edición" && (
-                  <div className="relative z-10 mt-6 flex items-center gap-2 font-semibold">
-                    <span>Cotizar</span>
-                    <span className="transition-transform duration-300 group-hover:translate-x-1.5">
-                      →
-                    </span>
-                  </div>
-                )}
+                {/* CTA */}
+                <div className="relative z-10 mt-6 flex items-center gap-2 font-semibold">
+                  {s.title === "Curso de edición" ? (
+                    <a href="#curso" className="flex items-center gap-2 transition-opacity hover:opacity-70">
+                      <span>Quiero el curso</span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                    </a>
+                  ) : (
+                    <>
+                      <span>Cotizar</span>
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                    </>
+                  )}
+                </div>
               </motion.div>
             );
           })}
