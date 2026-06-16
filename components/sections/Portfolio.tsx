@@ -12,11 +12,11 @@ const SECTIONS = [
   { category: "Videoclips",        textSide: "left"  },
 ] as const;
 
-// Geometría del coverflow (px)
-const CARD_W = 200;
-const CARD_H = 356; // 9:16
-const SPACING = 150; // separación horizontal entre tarjetas
-const ANGLE = 38; // inclinación 3D de las tarjetas laterales
+// Geometría del coverflow (px) — tarjetas horizontales 16:9
+const CARD_W = 360;
+const CARD_H = 203; // 16:9
+const SPACING = 230; // separación horizontal entre tarjetas
+const ANGLE = 35; // inclinación 3D de las tarjetas laterales
 
 export default function Portfolio() {
   return (
@@ -57,6 +57,28 @@ function CoverflowCarousel({
 }) {
   const items = PORTFOLIO.filter((p) => p.category === category);
   const [active, setActive] = useState(0);
+
+  // Escala responsive: la tarjeta central nunca se desborda del área visible.
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const measure = () => {
+      const w = el.offsetWidth;
+      // Queremos que entre la central + un asomo de las laterales.
+      setScale(Math.min(1, w / (CARD_W + 90)));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const cw = CARD_W * scale;
+  const ch = CARD_H * scale;
+  const spacing = SPACING * scale;
 
   const go = (dir: number) =>
     setActive((a) => Math.min(items.length - 1, Math.max(0, a + dir)));
@@ -100,8 +122,9 @@ function CoverflowCarousel({
 
   const stage = (
     <div
+      ref={stageRef}
       className="relative min-w-0 flex-1"
-      style={{ perspective: "1200px", height: CARD_H + 40 }}
+      style={{ perspective: "1200px", height: ch + 40 }}
     >
       {/* Capa para arrastrar / swipe */}
       <motion.div
@@ -120,11 +143,13 @@ function CoverflowCarousel({
             <CoverflowCard
               key={item.poster}
               item={item}
+              width={cw}
+              height={ch}
               isActive={isActive}
               onClick={() => setActive(i)}
               style={{
-                x: offset * SPACING - CARD_W / 2,
-                y: -CARD_H / 2,
+                x: offset * spacing - cw / 2,
+                y: -ch / 2,
                 rotateY: -offset * ANGLE,
                 scale: isActive ? 1 : Math.max(0.62, 1 - abs * 0.14),
                 opacity: abs > 2 ? 0 : 1,
@@ -151,11 +176,15 @@ function CoverflowCarousel({
 
 function CoverflowCard({
   item,
+  width,
+  height,
   isActive,
   onClick,
   style,
 }: {
   item: PortfolioItem;
+  width: number;
+  height: number;
   isActive: boolean;
   onClick: () => void;
   style: Record<string, number | string>;
@@ -182,7 +211,7 @@ function CoverflowCard({
       animate={style}
       transition={{ type: "spring", stiffness: 260, damping: 32 }}
       className="absolute left-1/2 top-1/2 overflow-hidden rounded-xl bg-ink-warm shadow-2xl"
-      style={{ width: CARD_W, height: CARD_H, transformStyle: "preserve-3d" }}
+      style={{ width, height, transformStyle: "preserve-3d" }}
     >
       {/* Thumbnail — img directo para que el browser envíe Referer al CDN */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
