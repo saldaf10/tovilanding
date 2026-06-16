@@ -49,7 +49,7 @@ export default function About() {
     <section id="sobre" className="grain relative overflow-hidden bg-ink py-24 sm:py-32">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 sm:px-10 lg:grid-cols-2">
         {/* Texto */}
-        <div className="order-2 lg:order-1">
+        <div className="relative z-10 order-2 lg:order-1">
           <Reveal>
             <span className="kicker text-magenta">{ABOUT.kicker}</span>
           </Reveal>
@@ -87,7 +87,7 @@ export default function About() {
         </div>
 
         {/* Foto con parallax */}
-        <div className="order-1 lg:order-2">
+        <div className="relative z-0 order-1 overflow-hidden lg:order-2">
           <Reveal>
             <div
               ref={imgWrapRef}

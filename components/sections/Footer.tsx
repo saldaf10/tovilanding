@@ -1,12 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
-import MagneticButton from "@/components/MagneticButton";
 import {
   BRAND_NAME,
   BRAND_FULL_NAME,
   BRAND_HANDLE,
-  CONTACT_EMAIL,
   SOCIALS,
 } from "@/lib/content";
 
@@ -25,32 +22,6 @@ export default function Footer() {
   return (
     <footer className="grain relative overflow-hidden bg-ink pt-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-10">
-        {/* CTA final gigante */}
-        <span className="kicker text-magenta">¿Trabajamos juntos?</span>
-
-        <a href={`mailto:${CONTACT_EMAIL}`} className="group mt-4 block" data-cursor="hover">
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display text-mega uppercase leading-[0.82] transition-colors group-hover:text-magenta"
-          >
-            Cuéntame
-            <br />
-            <span className="text-stroke group-hover:text-magenta">tu historia</span>
-          </motion.h2>
-        </a>
-
-        <div className="mt-10">
-          <MagneticButton
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="inline-flex rounded-full bg-magenta px-8 py-4 font-semibold text-white transition-colors hover:bg-red"
-          >
-            {CONTACT_EMAIL}
-          </MagneticButton>
-        </div>
-
         {/* Fila inferior */}
         <div className="mt-20 flex flex-col gap-8 border-t border-white/10 py-10 md:flex-row md:items-center md:justify-between">
           {/* Marca */}
