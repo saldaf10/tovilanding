@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Reveal from "@/components/Reveal";
@@ -61,6 +62,12 @@ export default function About() {
             </h2>
           </Reveal>
 
+          <Reveal delay={0.08}>
+            <p className="mt-3 font-script text-3xl text-magenta sm:text-4xl">
+              detrás de cada clip, soy yo
+            </p>
+          </Reveal>
+
           {/* Caption cinético sincronizado al scroll (vibe CapCut) */}
           <div className="mt-8 text-2xl font-medium leading-snug sm:text-3xl">
             <KineticCaption
@@ -87,7 +94,7 @@ export default function About() {
         </div>
 
         {/* Foto con parallax */}
-        <div className="relative z-0 order-1 overflow-hidden lg:order-2">
+        <div className="relative z-0 order-1 lg:order-2">
           <Reveal>
             <div
               ref={imgWrapRef}
@@ -97,14 +104,13 @@ export default function About() {
               <div className="absolute -right-3 -top-3 z-0 h-full w-full rounded-2xl bg-gold" />
               <div ref={imgRef} className="absolute inset-0 z-10 scale-110">
                 <Image
-                  // TODO: Reemplaza con la foto real de la editora (/public/about.jpg).
-                  src="https://images.unsplash.com/photo-1521119989659-a83eee488004?auto=format&fit=crop&w=900&q=70"
-                  alt="Retrato de la editora trabajando"
+                  src="/her-camera.jpg"
+                  alt="Valentina con su cámara"
                   fill
                   sizes="(max-width: 1024px) 90vw, 45vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-ink/15" />
+                <div className="absolute inset-0 bg-ink/10" />
               </div>
               {/* Etiqueta tipo sticker */}
               <div className="absolute bottom-4 left-4 z-20 rotate-[-3deg] bg-ink px-3 py-1 font-display text-sm uppercase text-cream">
@@ -112,6 +118,56 @@ export default function About() {
               </div>
             </div>
           </Reveal>
+
+          {/* Polaroid secundaria (vibe scrapbook girly) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, rotate: 8 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 6 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="absolute -bottom-8 -left-4 z-30 hidden w-36 rotate-6 rounded-sm bg-cream p-2 pb-6 shadow-2xl sm:block lg:-left-10 lg:w-44"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/her-golden.jpg"
+              alt="Valentina al atardecer"
+              className="aspect-[4/5] w-full rounded-sm object-cover"
+            />
+            <span className="absolute bottom-1 left-0 right-0 text-center font-script text-xl text-ink">
+              mi mundo ✨
+            </span>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Moodboard girly: tira de fotos tipo scrapbook */}
+      <div className="mx-auto mt-20 max-w-6xl px-5 sm:px-10">
+        <p className="mb-6 font-script text-3xl text-cream sm:text-4xl">un poco de mi mundo</p>
+        <div className="flex flex-wrap items-start gap-4 sm:gap-6">
+          {[
+            { src: "/her-mirror.jpg", rot: "-rotate-3" },
+            { src: "/mood-neon.jpg", rot: "rotate-2" },
+            { src: "/her-party.jpg", rot: "-rotate-2" },
+            { src: "/sunset.jpg", rot: "rotate-3" },
+          ].map((m, i) => (
+            <motion.div
+              key={m.src}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className={`${m.rot} w-40 shrink-0 rounded-sm bg-cream p-2 pb-5 shadow-xl sm:w-52`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={m.src}
+                alt=""
+                aria-hidden
+                loading="lazy"
+                className="aspect-[3/4] w-full rounded-sm object-cover"
+              />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

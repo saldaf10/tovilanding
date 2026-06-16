@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { inter, blocks } from "./fonts";
+import { inter, blocks, script } from "./fonts";
 import { BRAND_NAME } from "@/lib/content";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${blocks.variable}`}>
+    <html lang="es" className={`${inter.variable} ${blocks.variable} ${script.variable}`}>
       <body className="bg-ink text-[#f5f5f7] antialiased">
         <CustomCursor />
         <GrainOverlay />

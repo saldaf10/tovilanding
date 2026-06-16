@@ -22,7 +22,11 @@ export default function SocialProof() {
         </Reveal>
         <Reveal delay={0.05}>
           <h2 className="mt-3 max-w-3xl font-display text-giant uppercase leading-[0.88]">
-            Crecí gracias a ustedes
+            Crecí{" "}
+            <span className="font-script text-[1.15em] normal-case text-ink">
+              gracias
+            </span>{" "}
+            a ustedes
           </h2>
         </Reveal>
 

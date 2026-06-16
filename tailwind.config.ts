@@ -25,6 +25,8 @@ const config: Config = {
         display: ["var(--font-blocks)", "var(--font-inter)", "sans-serif"],
         // Tipografía de cuerpo
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        // Script/firma para acentos girly (palabras sueltas)
+        script: ["var(--font-script)", "cursive"],
       },
       fontSize: {
         // Escala de display gigante para titulares estilo vlog

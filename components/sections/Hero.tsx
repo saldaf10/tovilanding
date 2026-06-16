@@ -20,24 +20,19 @@ export default function Hero() {
       id="top"
       className="grain relative flex min-h-[100svh] flex-col justify-between overflow-hidden"
     >
-      {/* Video de fondo */}
+      {/* Fondo: atardecer (cálido / girly) */}
       <div className="absolute inset-0 z-0">
-        <video
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/sunset.jpg"
+          alt=""
+          aria-hidden
           className="h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          // TODO: Reemplaza con tu showreel real (mp4/webm). Súbelo a /public/videos/.
-          // poster sirve mientras carga el video (lazy-ish, no bloquea el render).
-          poster="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1600&q=60"
-        >
-          {/* TODO: <source src="/videos/showreel.webm" type="video/webm" /> */}
-          {/* TODO: <source src="/videos/showreel.mp4" type="video/mp4" /> */}
-        </video>
-        {/* Overlay oscuro en bloque sólido (sin degradado) */}
-        <div className="absolute inset-0 bg-ink/70" />
-        <div className="absolute inset-0 bg-ink/40 mix-blend-multiply" />
+        />
+        {/* Overlay para legibilidad + tinte magenta sutil (mantiene identidad) */}
+        <div className="absolute inset-0 bg-ink/55" />
+        <div className="absolute inset-0 bg-magenta/20 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
       </div>
 
       {/* Sticker / timestamp decorativo */}
@@ -78,8 +73,10 @@ export default function Hero() {
           className="mt-6 max-w-xl text-lg text-white/80 sm:text-xl"
         >
           Cuento historias que se{" "}
-          <span className="text-cream">sienten</span>. Vlogs, reels y edición
-          creativa con ritmo, color y alma.
+          <span className="font-script text-4xl leading-none text-cream sm:text-5xl">
+            sienten
+          </span>
+          . Vlogs, reels y edición creativa con ritmo, color y alma.
         </motion.p>
 
         {/* CTAs */}
