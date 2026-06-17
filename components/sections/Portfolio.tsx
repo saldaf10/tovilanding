@@ -6,11 +6,7 @@ import Reveal from "@/components/Reveal";
 import SplitText from "@/components/SplitText";
 import { PORTFOLIO, type PortfolioItem } from "@/lib/content";
 
-const SECTIONS = [
-  { category: "Vlogs",             textSide: "left"  },
-  { category: "Reels para marcas", textSide: "right" },
-  { category: "Videoclips",        textSide: "left"  },
-] as const;
+const CATEGORIES = ["Vlogs", "Reels para marcas", "Videoclips"] as const;
 
 // Geometría del coverflow (px) — tarjetas horizontales 16:9
 const CARD_W = 360;
@@ -31,15 +27,10 @@ export default function Portfolio() {
         </h2>
       </div>
 
-      {/* 3 coverflows */}
-      <div className="mt-16 flex flex-col gap-20">
-        {SECTIONS.map((s, i) => (
-          <CoverflowCarousel
-            key={s.category}
-            category={s.category}
-            textSide={s.textSide}
-            index={i}
-          />
+      {/* 3 coverflows circulares */}
+      <div className="mt-16 flex flex-col gap-16">
+        {CATEGORIES.map((cat, i) => (
+          <CoverflowCarousel key={cat} category={cat} index={i} />
         ))}
       </div>
     </section>
@@ -48,28 +39,26 @@ export default function Portfolio() {
 
 function CoverflowCarousel({
   category,
-  textSide,
   index,
 }: {
   category: string;
-  textSide: "left" | "right";
   index: number;
 }) {
   const items = PORTFOLIO.filter((p) => p.category === category);
-  const [active, setActive] = useState(0);
+  const n = items.length;
 
-  // Escala responsive: la tarjeta central nunca se desborda del área visible.
+  // Empieza siempre en el centro.
+  const [active, setActive] = useState(Math.floor(n / 2));
+
+  // Escala responsive: la tarjeta central nunca se desborda.
   const stageRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
-    const measure = () => {
-      const w = el.offsetWidth;
-      // Queremos que entre la central + un asomo de las laterales.
-      setScale(Math.min(1, w / (CARD_W + 90)));
-    };
+    const measure = () =>
+      setScale(Math.min(1, el.offsetWidth / (CARD_W + 90)));
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
@@ -80,96 +69,98 @@ function CoverflowCarousel({
   const ch = CARD_H * scale;
   const spacing = SPACING * scale;
 
-  const go = (dir: number) =>
-    setActive((a) => Math.min(items.length - 1, Math.max(0, a + dir)));
+  // Avanza de forma circular (wrap-around).
+  const go = (dir: number) => setActive((a) => (a + dir + n) % n);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.x < -60) go(1);
     else if (info.offset.x > 60) go(-1);
   };
 
-  const textBlock = (
-    <Reveal delay={0.05 * index}>
-      <div className="w-32 shrink-0 sm:w-44">
-        <p className="font-display text-2xl uppercase leading-tight text-white sm:text-3xl">
-          {category}
-        </p>
-        <p className="kicker mt-1 text-white/40">{items.length} videos</p>
-        {/* Flechas */}
-        <div className="mt-4 flex gap-2">
+  // Para teletransportar (sin animar) la tarjeta que da la vuelta.
+  const prevOffsets = useRef<number[]>([]);
+
+  // Precalcula posición de cada tarjeta (offset circular + si dio la vuelta).
+  const cards = items.map((item, i) => {
+    let offset = i - active;
+    offset = ((offset % n) + n) % n;
+    if (offset > n / 2) offset -= n;
+    const prev = prevOffsets.current[i];
+    const wrapped = prev !== undefined && Math.abs(offset - prev) > n / 2;
+    return { item, offset, wrapped };
+  });
+  prevOffsets.current = cards.map((c) => c.offset);
+
+  return (
+    <div className="px-5 sm:px-10">
+      {/* Texto ENCIMA del carrusel */}
+      <div className="mx-auto mb-5 flex max-w-3xl items-center justify-between">
+        <div>
+          <p className="font-display text-2xl uppercase leading-none text-white sm:text-3xl">
+            {category}
+          </p>
+          <p className="kicker mt-1 text-white/40">{n} videos</p>
+        </div>
+        <div className="flex gap-2">
           <button
             onClick={() => go(-1)}
-            disabled={active === 0}
             data-cursor="hover"
             aria-label="Anterior"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta disabled:opacity-25"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta"
           >
             ←
           </button>
           <button
             onClick={() => go(1)}
-            disabled={active === items.length - 1}
             data-cursor="hover"
             aria-label="Siguiente"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta disabled:opacity-25"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors hover:border-magenta hover:text-magenta"
           >
             →
           </button>
         </div>
       </div>
-    </Reveal>
-  );
 
-  const stage = (
-    <div
-      ref={stageRef}
-      className="relative min-w-0 flex-1"
-      style={{ perspective: "1200px", height: ch + 40 }}
-    >
-      {/* Capa para arrastrar / swipe */}
-      <motion.div
-        className="absolute inset-0 cursor-grab active:cursor-grabbing"
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.15}
-        onDragEnd={handleDragEnd}
-        style={{ transformStyle: "preserve-3d" }}
+      {/* Escenario 3D */}
+      <div
+        ref={stageRef}
+        className="relative"
+        style={{ perspective: "1200px", height: ch + 40 }}
       >
-        {items.map((item, i) => {
-          const offset = i - active;
-          const abs = Math.abs(offset);
-          const isActive = offset === 0;
-          return (
-            <CoverflowCard
-              key={item.poster}
-              item={item}
-              width={cw}
-              height={ch}
-              isActive={isActive}
-              onClick={() => setActive(i)}
-              style={{
-                x: offset * spacing - cw / 2,
-                y: -ch / 2,
-                rotateY: -offset * ANGLE,
-                scale: isActive ? 1 : Math.max(0.62, 1 - abs * 0.14),
-                opacity: abs > 2 ? 0 : 1,
-                zIndex: 100 - abs,
-                pointerEvents: abs > 2 ? "none" : "auto",
-              }}
-            />
-          );
-        })}
-      </motion.div>
-    </div>
-  );
-
-  return (
-    <div className="flex items-center gap-4 px-5 sm:gap-8 sm:px-10">
-      {textSide === "left" ? (
-        <>{textBlock}{stage}</>
-      ) : (
-        <>{stage}{textBlock}</>
-      )}
+        <motion.div
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.15}
+          onDragEnd={handleDragEnd}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {cards.map(({ item, offset, wrapped }, i) => {
+            const abs = Math.abs(offset);
+            const isActive = offset === 0;
+            return (
+              <CoverflowCard
+                key={item.poster}
+                item={item}
+                width={cw}
+                height={ch}
+                isActive={isActive}
+                instant={wrapped}
+                onClick={() => setActive(i)}
+                style={{
+                  x: offset * spacing - cw / 2,
+                  y: -ch / 2,
+                  rotateY: -offset * ANGLE,
+                  scale: isActive ? 1 : Math.max(0.62, 1 - abs * 0.14),
+                  opacity: abs > 2 ? 0 : 1,
+                  zIndex: 100 - abs,
+                  pointerEvents: abs > 2 ? "none" : "auto",
+                }}
+              />
+            );
+          })}
+        </motion.div>
+      </div>
     </div>
   );
 }
@@ -179,6 +170,7 @@ function CoverflowCard({
   width,
   height,
   isActive,
+  instant,
   onClick,
   style,
 }: {
@@ -186,6 +178,7 @@ function CoverflowCard({
   width: number;
   height: number;
   isActive: boolean;
+  instant: boolean;
   onClick: () => void;
   style: Record<string, number | string>;
 }) {
@@ -209,7 +202,11 @@ function CoverflowCard({
       data-cursor="hover"
       initial={false}
       animate={style}
-      transition={{ type: "spring", stiffness: 260, damping: 32 }}
+      transition={
+        instant
+          ? { duration: 0 }
+          : { type: "spring", stiffness: 260, damping: 32 }
+      }
       className="absolute left-1/2 top-1/2 overflow-hidden rounded-xl bg-ink-warm shadow-2xl"
       style={{ width, height, transformStyle: "preserve-3d" }}
     >
@@ -239,7 +236,7 @@ function CoverflowCard({
         </video>
       )}
 
-      {/* Oscurecer las tarjetas que NO están adelante */}
+      {/* Oscurecer las que NO están adelante */}
       <div
         className={`absolute inset-0 transition-colors duration-500 ${
           isActive ? "bg-ink/0" : "bg-ink/55"
