@@ -3,7 +3,6 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Portfolio from "@/components/sections/Portfolio";
 import SocialProof from "@/components/sections/SocialProof";
-import Services from "@/components/sections/Services";
 import Waitlist from "@/components/sections/Waitlist";
 import Footer from "@/components/sections/Footer";
 
@@ -20,7 +19,6 @@ export default function Home() {
         <About />
         <Portfolio />
         <SocialProof />
-        <Services />
         <Waitlist />
       </main>
       <Footer />

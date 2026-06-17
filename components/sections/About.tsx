@@ -47,7 +47,7 @@ export default function About() {
   }, [reduced]);
 
   return (
-    <section id="sobre" className="grain relative overflow-hidden bg-ink py-24 sm:py-32">
+    <section id="sobre" className="grain relative overflow-hidden bg-ink pt-24 pb-12 sm:pt-32 sm:pb-16">
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 sm:px-10 lg:grid-cols-2">
         {/* Texto */}
         <div className="relative z-10 order-2 lg:order-1">
@@ -143,12 +143,13 @@ export default function About() {
       {/* Moodboard girly: tira de fotos tipo scrapbook */}
       <div className="mx-auto mt-20 max-w-6xl px-5 sm:px-10">
         <p className="mb-6 font-script text-3xl text-cream sm:text-4xl">un poco de mi mundo</p>
-        <div className="flex flex-wrap items-start gap-4 sm:gap-6">
+        <div className="grid grid-cols-5 items-start gap-2 sm:gap-4">
           {[
             { src: "/her-mirror.jpg", rot: "-rotate-3" },
             { src: "/mood-neon.jpg", rot: "rotate-2" },
             { src: "/her-party.jpg", rot: "-rotate-2" },
             { src: "/sunset.jpg", rot: "rotate-3" },
+            { src: "/her-6805.png", rot: "rotate-1" },
           ].map((m, i) => (
             <motion.div
               key={m.src}
@@ -156,7 +157,7 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-8%" }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className={`${m.rot} w-40 shrink-0 rounded-sm bg-cream p-2 pb-5 shadow-xl sm:w-52`}
+              className={`${m.rot} rounded-sm bg-cream p-1.5 pb-4 shadow-xl sm:p-2 sm:pb-5`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

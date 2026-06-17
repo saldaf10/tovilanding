@@ -40,11 +40,10 @@ export const MARQUEE_WORDS = [
 // Sección "Sobre ella"
 export const ABOUT = {
   kicker: "Sobre mí",
-  // TODO: Ajusta la historia real.
   paragraphs: [
-    "Empecé hace poco, casi por accidente: una laptop prestada, un par de clips de un viaje y muchísimas ganas de contar algo que se sintiera de verdad.",
-    "Lo que era un hobby creció rápido — más rápido de lo que imaginé — gracias a la gente que se quedó, comentó y compartió. Ustedes convirtieron esto en mi carrera.",
-    "Hoy edito vlogs, reels y piezas para marcas que quieren que su historia se sienta, no solo que se vea. El ritmo, el color y el detalle lo son todo.",
+    "Soy Valentina Tovar, tengo 22 años y llevo editando desde 2016. Todo empezó grabando videos con mis amigas, en iMovie y desde el celular, con pura intuición.",
+    "De iMovie pasé a CapCut, y hoy edito casi todo ahí mismo, en el teléfono. Lo que más me gusta es crear cosas nuevas: probar ideas, mezclar estilos y que cada proyecto se sienta distinto.",
+    "Eso me ha permitido crear vlogs memorables con mis amigos, construir mi marca personal y trabajar con marcas increíbles.",
   ],
 };
 
@@ -144,12 +143,18 @@ export const PORTFOLIO: PortfolioItem[] = [
 ];
 
 // Prueba social: comentarios de la audiencia
+// Comentarios de la audiencia (elogios + quienes piden el curso) → carrusel
 export const COMMENTS = [
-  { user: "@dani.makes", text: "Necesito que hagas un curso YA 😭 edita tan limpio" },
-  { user: "@laucreativa", text: "¿Tutorial de esas transiciones porfa?" },
-  { user: "@motionjuan", text: "El color grading es otro nivel, enséñanos 🙏" },
-  { user: "@sofi.films", text: "Cada reel tuyo es una clase. ¿Para cuándo el curso?" },
-  { user: "@thebrandguy", text: "Te escribí al DM para un proyecto, eres la mejor" },
+  { user: "Alejandra Jiménez", text: "Amo cómo editas, estoy OBSESIONADA con tus videossss 😍😍" },
+  { user: "Sebastián Marín", text: "¿y por qué no creas tu propia marca? eres excelente en lo que haces 👍" },
+  { user: "ManuToro", text: "Amixxx estoy segura que todas amamosss 💘💘, ¿para cuándo tienes pensado un curso de edición?? 🤷‍♀️🤔🤔" },
+  { user: "Manuela Restrepo", text: "Ya contrátala, Disney 💗" },
+  { user: "Soytotiii", text: "Amiga, no te conozco pero capa con esa edición 🤌 deberías hacer tutoriales y así monetizar!!!!" },
+  { user: "Daniemc", text: "Muy pro esa edición, wowwwwww" },
+  { user: "Mariana", text: "¿Y qué tal si nos enseñasssss? QUE TESA MK" },
+  { user: "Kamila", text: "Cuando te contraten sigue haciendo videos plis" },
+  { user: "⭐", text: "ami, pero enséñame a editar con ese estilo 😤" },
+  { user: "Sara", text: "hola, quiero crear una marca solo para contratarte" },
 ];
 
 // Marcas que la contactaron (placeholder)

@@ -29,10 +29,12 @@ export default function Hero() {
           aria-hidden
           className="h-full w-full object-cover"
         />
-        {/* Overlay para legibilidad + tinte magenta sutil (mantiene identidad) */}
-        <div className="absolute inset-0 bg-ink/55" />
-        <div className="absolute inset-0 bg-magenta/20 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
+        {/* Overlay para legibilidad + tinte magenta sutil (mantiene identidad).
+            Suave arriba para dejar ver el atardecer; degradado más fuerte abajo
+            donde van el nombre y los CTAs. */}
+        <div className="absolute inset-0 bg-ink/25" />
+        <div className="absolute inset-0 bg-magenta/10 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
       </div>
 
       {/* Sticker / timestamp decorativo */}
@@ -47,15 +49,6 @@ export default function Hero() {
 
       {/* Contenido principal */}
       <div className="relative z-10 flex flex-1 flex-col justify-center px-5 pt-28 sm:px-10">
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="kicker mb-4 inline-block w-fit bg-magenta px-3 py-1 text-white"
-        >
-          Editora de video · Freelance
-        </motion.span>
-
         {/* Nombre gigante en fuente display, split text */}
         <h1 className="font-display uppercase leading-[0.82]">
           <SplitText

@@ -49,6 +49,7 @@ const config: Config = {
       },
       animation: {
         marquee: "marquee 28s linear infinite",
+        "marquee-cards": "marquee 55s linear infinite",
         "grain-shift": "grain-shift 0.6s steps(2) infinite",
       },
     },

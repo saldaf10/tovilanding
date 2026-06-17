@@ -57,19 +57,8 @@ export default function Waitlist() {
 
   return (
     <section id="curso" className="grain relative overflow-hidden bg-gold py-24 text-ink sm:py-32">
-      {/* Timer en la izquierda */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, rotate: -6 }}
-        whileInView={{ opacity: 1, scale: 1, rotate: -6 }}
-        viewport={{ once: true }}
-        transition={{ type: "spring", stiffness: 200, damping: 12 }}
-        className="absolute left-4 top-1/2 z-10 hidden -translate-y-1/2 lg:block"
-      >
-        <CountdownTimer />
-      </motion.div>
-
       <div className="mx-auto max-w-4xl px-5 text-center sm:px-10">
-        <span className="kicker">El curso</span>
+        <span className="kicker">Porque ustedes lo pidieron</span>
 
         <h2 className="mx-auto mt-4 max-w-3xl font-display text-giant uppercase leading-[0.88]">
           <SplitText text="Aprende a editar como yo" />
@@ -82,9 +71,23 @@ export default function Waitlist() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mx-auto mt-6 max-w-xl text-lg text-ink/80"
         >
-          Estoy preparando un curso donde te enseño mi proceso completo: ritmo,
-          color, transiciones y storytelling. Sé el primero en aprender.
+          Estoy preparando un curso donde te comparto mi proceso completo: desde
+          las bases de la edición hasta el nivel para trabajar con las mejores
+          marcas o crear la tuya propia. Todos mis trucos en un solo lugar,
+          con recursos listos para usar.
         </motion.p>
+
+        {/* Countdown — precio de lanzamiento */}
+        <div className="mt-12 flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: -4 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 200, damping: 14 }}
+          >
+            <CountdownTimer />
+          </motion.div>
+        </div>
 
         {/* Formulario */}
         <form

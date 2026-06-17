@@ -1,4 +1,4 @@
-import { Inter, Archivo_Black, Sacramento } from "next/font/google";
+import { Inter, Archivo_Black, Dancing_Script } from "next/font/google";
 // import localFont from "next/font/local"; // <- descomenta cuando tengas el archivo de "Blocks" o "Symphony"
 
 /**
@@ -14,14 +14,15 @@ export const inter = Inter({
  * Tipografía script/firma para acentos "girly" (palabras sueltas, no cuerpo).
  *
  * ⚠️ "Symphony" es una fuente comercial que NO está en Google Fonts, así que
- *    como acento usamos Sacramento (firma elegante). Para usar la Symphony real:
+ *    como acento usamos Dancing Script (cursiva elegante y con más cuerpo que
+ *    Sacramento, se lee más grande). Para usar la Symphony real:
  *    1. Copia el archivo en `app/fonts/Symphony.woff2`.
- *    2. Descomenta el `localFont` de abajo y borra el `Sacramento`.
+ *    2. Descomenta el `localFont` de abajo y borra el `Dancing_Script`.
  *       La variable CSS (`--font-script`) es la misma; no hay que tocar nada más.
  */
-export const script = Sacramento({
+export const script = Dancing_Script({
   subsets: ["latin"],
-  weight: "400",
+  weight: "700",
   display: "swap",
   variable: "--font-script",
 });

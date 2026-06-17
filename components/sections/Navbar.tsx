@@ -8,7 +8,6 @@ import { BRAND_NAME } from "@/lib/content";
 const LINKS = [
   { label: "Sobre mí", href: "#sobre" },
   { label: "Trabajo", href: "#trabajo" },
-  { label: "Servicios", href: "#servicios" },
   { label: "Curso", href: "#curso" },
 ];
 

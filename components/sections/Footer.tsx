@@ -10,7 +10,6 @@ import {
 const SOCIAL_LINKS = [
   { label: "Instagram", href: SOCIALS.instagram },
   { label: "TikTok", href: SOCIALS.tiktok },
-  { label: "YouTube", href: SOCIALS.youtube },
 ];
 
 /**
@@ -20,10 +19,10 @@ const SOCIAL_LINKS = [
  */
 export default function Footer() {
   return (
-    <footer className="grain relative overflow-hidden bg-ink pt-24">
+    <footer className="grain relative overflow-hidden bg-ink pt-10">
       <div className="mx-auto max-w-6xl px-5 sm:px-10">
         {/* Fila inferior */}
-        <div className="mt-20 flex flex-col gap-8 border-t border-white/10 py-10 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-6 border-t border-white/10 py-7 md:flex-row md:items-center md:justify-between">
           {/* Marca */}
           <div>
             <p className="font-display text-2xl uppercase">
@@ -55,7 +54,7 @@ export default function Footer() {
         </div>
 
         {/* Créditos */}
-        <div className="flex flex-col gap-2 pb-8 text-xs text-white/40 sm:flex-row sm:justify-between">
+        <div className="flex flex-col gap-2 pb-6 text-xs text-white/40 sm:flex-row sm:justify-between">
           <span>
             © {new Date().getFullYear()} {BRAND_NAME}. Todos los derechos reservados.
           </span>

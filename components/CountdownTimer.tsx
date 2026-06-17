@@ -17,37 +17,42 @@ function getTimeLeft() {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+const ZERO = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
 export default function CountdownTimer() {
-  const [t, setT] = useState(getTimeLeft);
+  // Empezamos en cero para que el render del servidor y el primer render del
+  // cliente coincidan; el tiempo real se calcula ya montado en el cliente.
+  const [t, setT] = useState(ZERO);
 
   useEffect(() => {
+    setT(getTimeLeft());
     const id = setInterval(() => setT(getTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="rotate-[-4deg] rounded-2xl bg-red px-5 py-4 text-white shadow-xl">
+    <div className="w-fit rounded-2xl bg-red px-4 py-4 text-white shadow-xl sm:px-5">
       <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] opacity-80">
         Precio de lanzamiento
       </p>
-      <div className="flex items-end gap-1 font-display leading-none">
+      <div className="flex items-end justify-center gap-1 font-display leading-none">
         <div className="text-center">
-          <span className="text-5xl sm:text-6xl">{pad(t.days)}</span>
+          <span className="text-4xl sm:text-5xl md:text-6xl">{pad(t.days)}</span>
           <p className="mt-0.5 text-[9px] uppercase tracking-widest opacity-70">días</p>
         </div>
-        <span className="mb-3 text-4xl opacity-50">:</span>
+        <span className="mb-2 text-3xl opacity-50 sm:mb-3 sm:text-4xl">:</span>
         <div className="text-center">
-          <span className="text-5xl sm:text-6xl">{pad(t.hours)}</span>
+          <span className="text-4xl sm:text-5xl md:text-6xl">{pad(t.hours)}</span>
           <p className="mt-0.5 text-[9px] uppercase tracking-widest opacity-70">hrs</p>
         </div>
-        <span className="mb-3 text-4xl opacity-50">:</span>
+        <span className="mb-2 text-3xl opacity-50 sm:mb-3 sm:text-4xl">:</span>
         <div className="text-center">
-          <span className="text-5xl sm:text-6xl">{pad(t.minutes)}</span>
+          <span className="text-4xl sm:text-5xl md:text-6xl">{pad(t.minutes)}</span>
           <p className="mt-0.5 text-[9px] uppercase tracking-widest opacity-70">min</p>
         </div>
-        <span className="mb-3 text-4xl opacity-50">:</span>
+        <span className="mb-2 text-3xl opacity-50 sm:mb-3 sm:text-4xl">:</span>
         <div className="text-center">
-          <span className="text-5xl sm:text-6xl">{pad(t.seconds)}</span>
+          <span className="text-4xl sm:text-5xl md:text-6xl">{pad(t.seconds)}</span>
           <p className="mt-0.5 text-[9px] uppercase tracking-widest opacity-70">seg</p>
         </div>
       </div>
